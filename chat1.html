@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时聊天记录</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+        }
+        .chat-container {
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 5px;
+            background: #f9f9f9;
+        }
+        .editable:hover {
+            background: #e0e0e0;
+            cursor: pointer;
+        }
+        .edit-input {
+            width: 80%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <span>执着一生</span>
+            <span>2025年7月28日</span>
+        </div>
+        <div id="chatMessages">
+            <div class="message editable" onclick="editMessage(this)" data-content="23+26+47各50" data-time="21:09:10">执着一生: 23+26+47各50</div>
+            <div class="message editable" onclick="editMessage(this)" data-content="34+11+36各80" data-time="21:09:16">执着一生: 34+11+36各80</div>
+            <div class="message editable" onclick="editMessage(this)" data-content="37+13+42各500, 23+27各100" data-time="21:09:28">执着一生: 37+13+42各500, 23+27各100</div>
+            <div class="message editable" onclick="editMessage(this)" data-content="24+27+30+42各100" data-time="21:10:10">执着一生: 24+27+30+42各100</div>
+            <div class="message editable" onclick="editMessage(this)" data-content="34+13+38+37+27各150" data-time="21:10:26">执着一生: 34+13+38+37+27各150</div>
+            <div class="message editable" onclick="editMessage(this)" data-content="21+34+17+33+08各60" data-time="21:10:29">执着一生: 21+34+17+33+08各60</div>
+        </div>
+    </div>
+
+    <script>
+        function editMessage(element) {
+            const originalContent = element.dataset.content;
+            const originalTime = element.dataset.time;
+            const input = document.createElement('input');
+            input.className = 'edit-input';
+            input.value = originalContent;
+
+            input.onblur = function() {
+                const newContent = input.value;
+                element.dataset.content = newContent;
+                element.innerHTML = `执着一生: ${newContent} <span style="color: gray">(${originalTime})</span>`;
+                // 这里通常会将更改同步到服务器（例如 Firebase、Socket.IO）
+                syncUpdate(element);
+            };
+
+            input.onkeypress = function(e) {
+                if (e.key === 'Enter') input.blur();
+            };
+
+            element.innerHTML = '';
+            element.appendChild(input);
+            input.focus();
+        }
+
+        function syncUpdate(element) {
+            // 模拟实时更新（在真实应用中，使用 WebSocket 或 Firebase）
+            const updatedContent = element.dataset.content;
+            const updatedTime = element.dataset.time;
+            element.innerHTML = `执着一生: ${updatedContent} <span style="color: gray">(${updatedTime})</span>`;
+            // 通知其他观众（使用实时服务实现）
+        }
+    </script>
+</body>
+</html>
